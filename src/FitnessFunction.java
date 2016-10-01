@@ -1,44 +1,39 @@
+import java.util.Scanner;
+
 public class FitnessFunction {
-
-    static byte[] solution = new byte[64];
-
-    /* Public methods */
-    // Set a candidate solution as a byte array
-    public static void setSolution(byte[] newSolution) {
-        solution = newSolution;
-    }
-
-    // To make it easier we can use this method to set our candidate solution 
-    // with string of 0s and 1s
-    static void setSolution(String newSolution) {
-        solution = new byte[newSolution.length()];
-        // Loop through each character of our string and save it in our byte 
-        // array
-        for (int i = 0; i < newSolution.length(); i++) {
-            String character = newSolution.substring(i, i + 1);
-            if (character.contains("0") || character.contains("1")) {
-                solution[i] = Byte.parseByte(character);
-            } else {
-                solution[i] = 0;
-            }
-        }
-    }
-
-    // Calculate inidividuals fittness by comparing it to our candidate solution
+	
+    // Calculate inidividual's fitness by comparing it to our candidate solution
     static int getFitness(Individual individual) {
-        int fitness = 0;
-        // Loop through our individuals genes and compare them to our cadidates
-        for (int i = 0; i < individual.size() && i < solution.length; i++) {
-            if (individual.getGene(i) == solution[i]) {
-                fitness++;
+        int fitness = -1;
+        Scanner sc = new Scanner(System.in);
+        while(fitness == -1){
+            System.out.println("Rate this on a scale from 1-10:");
+            MidiConverter.music_play(individual);
+            int input = sc.nextInt();
+            switch(input){
+            case 1: fitness = input; break;
+            case 2: fitness = input; break;
+            case 3: fitness = input; break;
+            case 4: fitness = input; break;
+            case 5: fitness = input; break;
+            case 6: fitness = input; break;
+            case 7: fitness = input; break;
+            case 8: fitness = input; break;
+            case 9: fitness = input; break;
+            case 10: fitness = input; break;
+            // Causes the loop to ask the question again
+            default: break;
             }
         }
+        System.out.println("Rating: " + fitness);
         return fitness;
     }
     
     // Get optimum fitness
+    // TODO This may cause problems later, don't  youuuu forget about meeee
     static int getMaxFitness() {
-        int maxFitness = solution.length;
-        return maxFitness;
+//        int maxFitness = solution.length;
+//        return maxFitness;
+    	return 1;
     }
 }

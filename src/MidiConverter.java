@@ -2,7 +2,7 @@
 public class MidiConverter {
 
 
-	public static void music_export(Individual individual) {
+	public static void music_play(Individual individual) {
 		// TODO Auto-generated method stub
 		
 	}
