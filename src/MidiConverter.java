@@ -4,7 +4,7 @@ import jm.music.tools.*;
 import jm.util.*;
 
 public class MidiConverter {
-	//class variables
+	
 
 
 			public Phrase[] music_import(String filename){ // music importer: takes in (midi) file,
@@ -17,11 +17,18 @@ public class MidiConverter {
 				
 
 				//functions associated with Part class
-				double partend = part.getEndTime();
-				Phrase[] phrase = part.getPhraseArray();
+				//double partend = part.getEndTime();
+				Phrase[] thePhrase = part.getPhraseArray(); //gets phrase array in part
 					
-				return phrase;
+				return thePhrase;
 
+			}
+			public void music_exports(Phrase[] thePhrase, String filename){
+				Part thePart = new Part(); //create empty part
+				Score theScore = new Score("Exported score"); //make new score
+				thePart.addPhraseList(thePhrase); //add phrases to part
+				theScore.addPart(thePart); //add part to score
+				Write.midi(theScore, filename);
 			}
 
 			public void music_play(String filename){ //plays music given a file?
