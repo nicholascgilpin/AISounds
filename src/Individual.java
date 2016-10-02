@@ -10,7 +10,7 @@ public class Individual {
 	   static int defaultGeneLength = 4;
 	   //private byte[] genes = new byte[defaultGeneLength];
 	   public Phrase[] genes = new Phrase[defaultGeneLength];
-	   private short fitness = 0;	// Rating from 1-10 that is set by FitnessFunction.getFitness(i)
+	   public int fitness = 0;	// Rating from 1-10 that is set by FitnessFunction.getFitness(i)
 	
 	public Individual(int defaultGeneLength){
 		Individual.defaultGeneLength = defaultGeneLength;
@@ -19,17 +19,14 @@ public class Individual {
     // Create a random individual
     public void generateIndividual() {
 		Phrase phr;
-		for (int i=0; i<4; i++) {
-			phr = new Phrase("Chromatic Scale", i*4.0);
-			for(int j=0;j<4;j++) {
-				int pitch = (int) Math.floor(Math.random()*10) + 30;
-				Note n = new Note(pitch, 1);
-				phr.addNote(n);
-			}
-			genes[i] = phr;
+		phr = new Phrase("Chromatic Scale", 0.0);
+		for(int j=0;j<4;j++) {
+			int pitch = (int) Math.floor(Math.random()*10) + 60;
+			Note n = new Note(pitch, 1);
+			n.setDynamic(100);
+			phr.addNote(n);
 		}
-		
-		
+		genes[0] = phr;
     }
 
     /* Getters and setters */

@@ -2,16 +2,25 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import jm.music.data.Phrase;
+
 public class AISoundsMain {
 
 	static double version = 0.0;
 	
 	static Population myPop;
+	static MidiConverter midi;
+	
+	static boolean sec1Rated;
+	static boolean sec2Rated;
+	static boolean sec3Rated;
+	static boolean sec4Rated;
 
-	static int currentGen = 0;
-	static int totalGens = 0;
+	static int scoreCount = 0;
+	static int currentGen = 1;
+	static int totalGens = 1;
 	static int currentSec = 1;
-	static int totalSecs = 5;
+	static int totalSecs = 4;
 
 	static JButton playGen;
 	static JButton prevGen;
@@ -36,34 +45,45 @@ public class AISoundsMain {
 			setErrorText(""); //Clear error messages.
 			if (e.getSource() == playGen) {
 				//Toggle button text between "Play"/"Pause"
-				if (playGen.getText().equals("Play All")) {
-					//Start playing music.
-					playGen.setText("Stop");
-				} else {
-					//Stop playing music.
-					playGen.setText("Play All");
+				Phrase[] phrArr = new Phrase[4];
+				for (int i = 0; i<myPop.size(); i++) {
+					phrArr[i] = myPop.individuals[i].genes[0];
 				}
+				midi.music_export(phrArr, "score" + scoreCount + ".mid");
+				midi.music_play("score" + scoreCount + ".mid");
 			} else if (e.getSource() == prevGen) { //Old Generation.
 				currentGen--;
-				if (currentGen <= 0) { //Lower Limit.
-					currentGen = 0;
+				if (currentGen <= 1) { //Lower Limit.
+					currentGen = 1;
 					prevGen.setEnabled(false);
 				}
 				disableRating();
-				updateGenCounter();
+				updateGenCounter(currentGen);
 				resetSecButtons();
 			} else if (e.getSource() == nextGen) {
 				prevGen.setEnabled(true);
 				currentGen++;
 				if (currentGen > totalGens) { //New Generation.
 					enableRating();
-					breedNewGen();
+					if (sec1Rated && sec2Rated && sec3Rated && sec4Rated) {
+						breedNewGen();
+						sec1Rated = false;
+						sec2Rated = false;
+						sec3Rated = false;
+						sec4Rated = false;
+					} else {
+						currentGen--;
+						System.out.println(currentGen + "- 2");
+						enableRating();
+						nextGen.setEnabled(true);
+					}
 				} else if (currentGen == totalGens) { //Current Generation.
 					enableRating();
 				} else { //Old Generation.
 					disableRating();
 				}
-				updateGenCounter();
+				System.out.println(currentGen);
+				updateGenCounter(currentGen);
 				resetSecButtons();
 			} else if (e.getSource() == prevSec) {
 				nextSec.setEnabled(true);
@@ -72,6 +92,7 @@ public class AISoundsMain {
 					currentSec = 1;
 					prevSec.setEnabled(false);
 				}
+				System.out.println(currentSec);
 				updateSecCounter();
 			} else if (e.getSource() == nextSec) {
 				prevSec.setEnabled(true);
@@ -82,24 +103,24 @@ public class AISoundsMain {
 				}
 				updateSecCounter();
 			} else if (e.getSource() == replaySec) {
-				//Play myPop.currentGen.getGenes[currentSec]
+				midi.music_export(myPop.individuals[0].genes[0], "sec" + 0 + ".mid");
+				midi.music_play("sec" + 0 + ".mid");
+				scoreCount++;
 			} else if (e.getSource() == rate) {
 				parseInput(rating.getText());
 			} else if (e.getSource() == rating) {
 				parseInput(rating.getText());
 			}
-
-			window.repaint(); //Update Graphics.
 		}
 	}
 
 	public static void main(String[] args) {
 		// Create an initial population
-        myPop = new Population(5, true);
+        myPop = new Population(4, true);
         
-        MidiConverter midi = new MidiConverter();
-        midi.music_export(myPop.individuals[0].genes, "indiv.mid");
-        midi.music_play("indiv.mid");
+        midi = new MidiConverter();
+        //midi.music_export(myPop.individuals[0].genes, "indiv.mid");
+        //midi.music_play("indiv.mid");
         
 		//Setup Window Contents.
 		ButtonHandler listener = new ButtonHandler();
@@ -116,7 +137,7 @@ public class AISoundsMain {
 		prevSec.setEnabled(false);
 		nextSec = new JButton("Next Sec");
 		nextSec.addActionListener(listener);
-		replaySec = new JButton("Replay Sec");
+		replaySec = new JButton("Play Sec");
 		replaySec.addActionListener(listener);
 		rate = new JButton("Rate!");
 		rate.addActionListener(listener);
@@ -229,6 +250,7 @@ public class AISoundsMain {
 	public static void breedNewGen() {
 		//System.out.println("Generation: " + totalGens + " Fittest: " + myPop.getFittest().getFitness());
         //myPop.print();
+		totalGens++;
         myPop = Algorithm.evolvePopulation(myPop);
 	}
 
@@ -239,12 +261,22 @@ public class AISoundsMain {
 		updateSecCounter();
 	}
 
+	public static void sectionAddRating(int val) {
+		switch (currentSec) {
+			case 0: sec1Rated = true;
+			case 1: sec2Rated = true;
+			case 2: sec3Rated = true;
+			case 3: sec4Rated = true;
+		}
+		myPop.individuals[currentGen].fitness = val;
+	}
+	
 	public static void parseInput(String str) {
 		try {
 			//Parse input.
 			int val = Integer.parseInt(str);
 			if (checkRating(val)) {
-			//sectionAddRating(rating.getText());
+			sectionAddRating(val);
 			rating.setText("");
 			nextSec.doClick();
 			rating.requestFocus();
@@ -284,8 +316,10 @@ public class AISoundsMain {
 		rating.setText("");
 	}
 
-	public static void updateGenCounter() {
-		genLabel.setText("Generation: " + currentGen);
+	public static void updateGenCounter(int gen) {
+		genLabel.setText("Generation: " + gen);
+		window.repaint(); //Update Graphics.
+		window.revalidate(); //Again.
 	}
 
 	public static void updateSecCounter() {

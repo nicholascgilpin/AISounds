@@ -21,10 +21,21 @@ public class MidiConverter {
 		return thePhrase;
 	}
 	
-	public void music_export(Phrase[] thePhrase, String filename){
+	public void music_export(Phrase thePhrase, String filename){
 		Part thePart = new Part(); //create empty part
 		Score theScore = new Score("Exported score"); //make new score
-		thePart.addPhraseList(thePhrase); //add phrase to part
+		thePart.addPhrase(thePhrase); //add phrase to part
+		theScore.addPart(thePart); //add part to score
+		Write.midi(theScore, filename);
+	}
+	
+	public void music_export(Phrase[] thePhrases, String filename){
+		Part thePart = new Part(); //create empty part
+		Score theScore = new Score("Exported score"); //make new score
+		for (int i = 0; i < thePhrases.length; i++) {
+			thePhrases[i].setStartTime(i*4.0);
+			thePart.addPhrase(thePhrases[i]);
+		}
 		theScore.addPart(thePart); //add part to score
 		Write.midi(theScore, filename);
 	}
