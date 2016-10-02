@@ -1,8 +1,15 @@
+
+import jm.JMC;
+import jm.music.data.*;
+import jm.midi.*;
+import jm.util.*;
+
 // Change the bit string to be a music measure
 public class Individual {
 
 	   static int defaultGeneLength = 4;
-	   private byte[] genes = new byte[defaultGeneLength];
+	   //private byte[] genes = new byte[defaultGeneLength];
+	   private Phrase[] genes = new Phrase[defaultGeneLength];
 	   private short fitness = 0;	// Rating from 1-10 that is set by FitnessFunction.getFitness(i)
 	
 	public Individual(int defaultGeneLength){
@@ -11,10 +18,18 @@ public class Individual {
 
     // Create a random individual
     public void generateIndividual() {
-        for (int i = 0; i < size(); i++) {
-            byte gene = (byte) Math.round(Math.random());
-            genes[i] = gene;
-        }
+		Phrase phr;
+		for (int i=0; i<4; i++) {
+			phr = new Phrase("Chromatic Scale", i*4.0);
+			for(int j=0;j<4;j++) {
+				int pitch = (int) Math.floor(Math.random()*10) + 30;
+				Note n = new Note(pitch, 1);
+				phr.addNote(n);
+			}
+			genes[i] = phr;
+		}
+		
+		
     }
 
     /* Getters and setters */
@@ -23,11 +38,11 @@ public class Individual {
         defaultGeneLength = length;
     }
     
-    public byte getGene(int index) {
+    public Phrase getGene(int index) {
         return genes[index];
     }
 
-    public void setGene(int index, byte value) {
+    public void setGene(int index, Phrase value) {
         genes[index] = value;
         fitness = 0;
     }

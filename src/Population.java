@@ -58,9 +58,9 @@
 	    	System.out.print("<");
 	    	for(int i = 0; i < individuals.length-1; i++){
 	    		System.out.print(individuals[i].getFitness());
-	    		if(i>0){
+//	    		if(i>0){
 	    			System.out.print(",");
-	    		}
+//	    		}
 	    	}
 	    	System.out.print(individuals[individuals.length-1].getFitness());
 	    	System.out.println(">");

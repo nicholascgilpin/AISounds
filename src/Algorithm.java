@@ -1,3 +1,6 @@
+import jm.music.data.Note;
+import jm.music.data.Phrase;
+
 
 public class Algorithm {
 	  /* GA parameters */
@@ -48,11 +51,37 @@ public class Algorithm {
         // Loop through genes
         for (int i = 0; i < indiv1.size(); i++) {
             // Crossover
-            if (Math.random() <= uniformRate) {
-                newSol.setGene(i, indiv1.getGene(i));
-            } else {
-                newSol.setGene(i, indiv2.getGene(i));
+        	// Get 1st note in 1st phrase
+        	// Get notes from 2nd phrse until == duration 1st note
+        	int track2 = 0;
+        	int currentNote = 0;
+        	double dur1 = 0;
+        	double dur2 = 0;
+        	Note buffer;	// Maximum note size for temp1 comparisons
+            Note[] buffer2; //Maximum note size for temp2 comparisons
+        	Phrase phr = new Phrase();
+            for (int track = 0; track < indiv1.getGene(i).length();track++){
+        		buffer = indiv1.getGene(i).getNote(track);
+        		buffer2 = new Note[8];
+        		buffer2[currentNote] = indiv2.getGene(i).getNote(track2);
+            	dur1 = buffer.getRhythmValue();
+            	dur2 = buffer2[currentNote].getRhythmValue();
+            	while (dur2 < dur1) {
+            		currentNote++;
+            		buffer2[currentNote] = indiv2.getGene(i).getNote(track2);
+            		dur2 += buffer2[currentNote].getRhythmValue();
+            	}
+            	if (dur2 > dur1) {
+            		//Split Notes
+            	}
+            	if (Math.random() <= uniformRate) {
+            		phr.addNote(buffer);
+            	} else {
+            		phr.addNoteList(buffer2);
+            	}
+            	
             }
+            newSol.setGene(i, phr);
         }
         return newSol;
     }
@@ -63,8 +92,8 @@ public class Algorithm {
         for (int i = 0; i < indiv.size(); i++) {
             if (Math.random() <= mutationRate) {
                 // Create random gene
-                byte gene = (byte) Math.round(Math.random());
-                indiv.setGene(i, gene);
+                //byte gene = (byte) Math.round(Math.random());
+                //indiv.setGene(i, gene);
             }
         }
     }
