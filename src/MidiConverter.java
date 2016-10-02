@@ -23,7 +23,7 @@ public class MidiConverter {
 				return thePhrase;
 
 			}
-			public void music_exports(Phrase[] thePhrase, String filename){
+			public void music_export(Phrase[] thePhrase, String filename){
 				Part thePart = new Part(); //create empty part
 				Score theScore = new Score("Exported score"); //make new score
 				thePart.addPhraseList(thePhrase); //add phrases to part
