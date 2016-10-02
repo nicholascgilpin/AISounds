@@ -51,6 +51,7 @@ public class AISoundsMain {
 				}
 				midi.music_export(phrArr, "score" + scoreCount + ".mid");
 				midi.music_play("score" + scoreCount + ".mid");
+				scoreCount++;
 			} else if (e.getSource() == prevGen) { //Old Generation.
 				currentGen--;
 				if (currentGen <= 1) { //Lower Limit.
@@ -65,7 +66,7 @@ public class AISoundsMain {
 				currentGen++;
 				if (currentGen > totalGens) { //New Generation.
 					enableRating();
-					if (sec1Rated && sec2Rated && sec3Rated && sec4Rated) {
+					if (true) {
 						breedNewGen();
 						sec1Rated = false;
 						sec2Rated = false;
@@ -103,8 +104,8 @@ public class AISoundsMain {
 				}
 				updateSecCounter();
 			} else if (e.getSource() == replaySec) {
-				midi.music_export(myPop.individuals[0].genes[0], "sec" + 0 + ".mid");
-				midi.music_play("sec" + 0 + ".mid");
+				midi.music_export(myPop.individuals[currentSec-1].genes[0], "sec" + currentSec + ".mid");
+				midi.music_play("sec" + currentSec + ".mid");
 				scoreCount++;
 			} else if (e.getSource() == rate) {
 				parseInput(rating.getText());

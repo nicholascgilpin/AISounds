@@ -6,9 +6,9 @@ public class Algorithm {
 	  /* GA parameters */
     private static final double uniformRate = 0.5;
     private static final double mutationRate = 0.015;
-    private static final int tournamentSize = 5;
+    private static final int tournamentSize = 4;
     // Determines whether the fittest individual is immortal
-    private static final boolean elitism = false;
+    private static final boolean elitism = true;
 
     /* Public methods */
     
@@ -48,43 +48,35 @@ public class Algorithm {
     // Crossover individuals
     private static Individual crossover(Individual indiv1, Individual indiv2) {
         Individual newSol = new Individual(indiv1.size());
-        // Loop through genes
-        for (int i = 0; i < indiv1.size(); i++) {
-            // Crossover
-        	// Get 1st note in 1st phrase
-        	// Get notes from 2nd phrse until == duration 1st note
-        	int track2 = 0;
-        	int currentNote = 0;
-        	double dur1 = 0;
-        	double dur2 = 0;
-        	Note buffer;	// Maximum note size for temp1 comparisons
-            Note[] buffer2; //Maximum note size for temp2 comparisons
-        	Phrase phr = new Phrase();
-            for (int track = 0; track < indiv1.getGene(i).length();track++){
-        		buffer = indiv1.getGene(i).getNote(track);
-        		buffer2 = new Note[8];
-        		buffer2[currentNote] = indiv2.getGene(i).getNote(track2);
-            	dur1 = buffer.getRhythmValue();
-            	dur2 = buffer2[currentNote].getRhythmValue();
-            	while (dur2 < dur1) {
-            		currentNote++;
-            		buffer2[currentNote] = indiv2.getGene(i).getNote(track2);
-            		dur2 += buffer2[currentNote].getRhythmValue();
-            	}
-            	if (dur2 > dur1) {
-            		//Split Notes
-            	}
-            	if (Math.random() <= uniformRate) {
-            		phr.addNote(buffer);
-            	} else {
-            		phr.addNoteList(buffer2);
-            	}
-            	
-            }
-            newSol.setGene(i, phr);
-        }
-        return newSol;
+        // Loop through notes
+        int track2 = 0;
+    	int currentNote = 0;
+    	double dur1 = 0;
+    	double dur2 = 0;
+    	Note buffer;	// Maximum note size for temp1 comparisons
+        Note buffer2; //Maximum note size for temp2 comparisons
+    	Phrase phr = new Phrase();
+        for (int i = 0; i < indiv1.genes[0].length(); i++) {
+        // Crossover
+    	// Get 1st note in 1st phrase
+    	// Get notes from 2nd phrse until == duration 1st note
+		buffer = indiv1.genes[0].getNote(i);
+		buffer2 = indiv2.genes[0].getNote(i);
+    	dur1 = buffer.getRhythmValue();
+    	dur2 = buffer2.getRhythmValue();
+    	
+    	if (Math.random() <= uniformRate) {
+    		phr.addNote(buffer);
+    		System.out.println("Chose Note 1 " + buffer.toString());
+    	} else {
+    		phr.addNote(buffer2);
+    		System.out.println("Chose Note 2 " + buffer2.toString());
+    	}
+    	
     }
+    newSol.setGene(0, phr);
+    return newSol;
+}
 
     // Mutate an individual
     private static void mutate(Individual indiv) {

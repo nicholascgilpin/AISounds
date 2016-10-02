@@ -1,4 +1,6 @@
 
+import java.util.Random;
+
 import jm.JMC;
 import jm.music.data.*;
 import jm.midi.*;
