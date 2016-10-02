@@ -4,11 +4,13 @@ public class FitnessFunction {
 	
     // Calculate inidividual's fitness by comparing it to our candidate solution
     static short getFitness(Individual individual) {
+    	MidiConverter midi = new MidiConverter();
         short fitness = -1;
         Scanner sc = new Scanner(System.in);
         while(fitness == -1){
             System.out.println("Rate this on a scale from 1-10:");
-            MidiConverter.music_play(individual);
+            midi.music_export(individual.genes, "indiv.mid");
+            midi.music_play("indiv.mid");
             short input = sc.nextShort();
             switch(input){
             case 1: fitness = input; break;

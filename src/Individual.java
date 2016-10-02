@@ -9,7 +9,7 @@ public class Individual {
 
 	   static int defaultGeneLength = 4;
 	   //private byte[] genes = new byte[defaultGeneLength];
-	   private Phrase[] genes = new Phrase[defaultGeneLength];
+	   public Phrase[] genes = new Phrase[defaultGeneLength];
 	   private short fitness = 0;	// Rating from 1-10 that is set by FitnessFunction.getFitness(i)
 	
 	public Individual(int defaultGeneLength){
@@ -63,7 +63,7 @@ public class Individual {
     public String toString() {
         String geneString = "";
         for (int i = 0; i < size(); i++) {
-            geneString += getGene(i);
+            geneString += getGene(i).toString();
         }
         return geneString;
     }
