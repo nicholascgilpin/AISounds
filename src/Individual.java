@@ -1,10 +1,13 @@
 // Change the bit string to be a music measure
 public class Individual {
 
-    static int defaultGeneLength = 64;
-    private byte[] genes = new byte[defaultGeneLength];
-    // Cache
-    private int fitness = 0;
+	   static int defaultGeneLength = 4;
+	   private byte[] genes = new byte[defaultGeneLength];
+	   private short fitness = 0;	// Rating from 1-10 that is set by FitnessFunction.getFitness(i)
+	
+	public Individual(int defaultGeneLength){
+		Individual.defaultGeneLength = defaultGeneLength;
+	}
 
     // Create a random individual
     public void generateIndividual() {
@@ -49,4 +52,5 @@ public class Individual {
         }
         return geneString;
     }
+    
 }

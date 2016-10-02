@@ -3,13 +3,13 @@ import java.util.Scanner;
 public class FitnessFunction {
 	
     // Calculate inidividual's fitness by comparing it to our candidate solution
-    static int getFitness(Individual individual) {
-        int fitness = -1;
+    static short getFitness(Individual individual) {
+        short fitness = -1;
         Scanner sc = new Scanner(System.in);
         while(fitness == -1){
             System.out.println("Rate this on a scale from 1-10:");
             MidiConverter.music_play(individual);
-            int input = sc.nextInt();
+            short input = sc.nextShort();
             switch(input){
             case 1: fitness = input; break;
             case 2: fitness = input; break;
@@ -29,11 +29,4 @@ public class FitnessFunction {
         return fitness;
     }
     
-    // Get optimum fitness
-    // TODO This may cause problems later, don't  youuuu forget about meeee
-    static int getMaxFitness() {
-//        int maxFitness = solution.length;
-//        return maxFitness;
-    	return 1;
-    }
 }
