@@ -7,10 +7,10 @@ import jm.music.data.Phrase;
 public class AISoundsMain {
 
 	static double version = 0.0;
-	
+
 	static Population myPop;
 	static MidiConverter midi;
-	
+
 	static boolean sec1Rated;
 	static boolean sec2Rated;
 	static boolean sec3Rated;
@@ -118,11 +118,11 @@ public class AISoundsMain {
 	public static void main(String[] args) {
 		// Create an initial population
         myPop = new Population(4, true);
-        
+
         midi = new MidiConverter();
         //midi.music_export(myPop.individuals[0].genes, "indiv.mid");
         //midi.music_play("indiv.mid");
-        
+
 		//Setup Window Contents.
 		ButtonHandler listener = new ButtonHandler();
 		//Setup Buttons...
@@ -247,7 +247,7 @@ public class AISoundsMain {
 		window.setLocation(100, 100);
 		window.setVisible(true);
 	}
-	
+
 	public static void breedNewGen() {
 		//System.out.println("Generation: " + totalGens + " Fittest: " + myPop.getFittest().getFitness());
         //myPop.print();
@@ -271,7 +271,7 @@ public class AISoundsMain {
 		}
 		myPop.individuals[currentGen].fitness = val;
 	}
-	
+
 	public static void parseInput(String str) {
 		try {
 			//Parse input.
